@@ -5,12 +5,21 @@ public class Buttons : MonoBehaviour {
 
 	public AudioSource sound;
 	bool startGame = false;
+	AsyncOperation async;
 
 	// Use this for initialization
 
 	void Start()
 	{
 		startGame = false;
+		StartCoroutine(LevelLoad());
+	}
+
+	IEnumerator LevelLoad()
+	{
+		async = Application.LoadLevelAsync(1);
+		async.allowSceneActivation = false;
+		yield return async;
 	}
 
 	public void StartGame()
@@ -23,7 +32,7 @@ public class Buttons : MonoBehaviour {
 	{
 		if (startGame && !sound.isPlaying)
 		{
-			Application.LoadLevel(1);
+			async.allowSceneActivation = true;
 		}
 	}
 }
